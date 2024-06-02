@@ -50,6 +50,7 @@ style = "bg:color_purple fg:color_dark_text"
 
 [os.symbols]
 Windows = "󰍲 "
+Pop = " "
 Ubuntu = "󰀵 "
 SUSE = " "
 Raspbian = "󰐿 "
