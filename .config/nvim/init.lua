@@ -634,8 +634,22 @@ require("lazy").setup({
 				--
 				-- But for many setups, the LSP (`ts_ls`) will work just fine
 				-- ts_ls = {},
-				--
 
+				-- ─────────────────────────────────── PYTHON ───────────────────────────────────
+				pyright = {
+					settings = {
+						python = {
+							analysis = {
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
+								typeCheckingMode = "basic",
+							},
+						},
+					},
+				},
+				ruff = {},
+
+				-- ───────────────────────────────────── LUA ─────────────────────────────────────
 				lua_ls = {
 					-- cmd = { ... },
 					-- filetypes = { ... },
@@ -668,6 +682,8 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"black",
+				"ruff",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -837,7 +853,7 @@ require("lazy").setup({
 						-- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
 						group_index = 0,
 					},
-					{ name = "nvim_lsp" },
+					{ name = "nvim_lsp", priority = 100 },
 					{ name = "luasnip" },
 					{ name = "path" },
 				},
