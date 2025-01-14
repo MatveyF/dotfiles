@@ -90,6 +90,14 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Show a few lines of context around the cursor. Note that this makes the text scroll if you
+-- mouse-click near the start or end of the window.
+vim.opt.scrolloff = 10
+
+-- relative line numbers
+vim.opt.number = true
+vim.opt.relativenumber = true
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
