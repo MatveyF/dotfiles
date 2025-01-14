@@ -1,0 +1,17 @@
+import = [
+    "~/.config/alacritty/themes/themes/gruvbox_material_medium_dark.toml"
+]
+
+[font]
+size = 9
+
+[font.normal]
+family = "RobotoMono Nerd Font"
+
+[window]
+opacity = 1
+
+[window.padding]
+x = 5
+y = 5
+
