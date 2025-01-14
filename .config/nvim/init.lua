@@ -279,6 +279,87 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		-- Autoclose brackets, quotes, etc.
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = function()
+			require("nvim-autopairs").setup({
+				check_ts = true, -- Enable treesitter integration
+				ts_config = {
+					lua = { "string" }, -- Don't add pairs in lua string treesitter nodes
+					javascript = { "template_string" }, -- Don't add pairs in js template_string
+				},
+				fast_wrap = {
+					map = "<M-e>", -- Alt+e to fast wrap
+					chars = { "{", "[", "(", '"', "'" },
+					pattern = [=[[%'%"%>%]%)%}%,]]=],
+					end_key = "$",
+					keys = "qwertyuiopzxcvbnmasdfghjkl",
+					check_comma = true,
+					highlight = "Search",
+					highlight_grey = "Comment",
+				},
+			})
+
+			-- If you want to automatically add `()` after selecting a function or method
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		end,
+	},
+
+	{
+		"shellRaining/hlchunk.nvim",
+		event = { "UIEnter" },
+		config = function()
+			require("hlchunk").setup({
+				chunk = {
+					enable = true,
+					support_filetypes = {
+						"*.py",
+						"*.lua",
+						"*.js",
+						"*.ts",
+					},
+					chars = {
+						horizontal_line = "─",
+						vertical_line = "│",
+						left_top = "╭",
+						left_bottom = "╰",
+						right_arrow = ">",
+					},
+					style = {
+						{ fg = "#806d9c" },
+					},
+				},
+				indent = {
+					enable = true,
+					use_treesitter = true,
+					chars = {
+						"│",
+					},
+					style = {
+						{ fg = "#444444" },
+					},
+				},
+				line_num = {
+					enable = true,
+					style = "#806d9c",
+				},
+				blank = {
+					enable = true,
+					chars = {
+						"·",
+					},
+					style = {
+						vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("Whitespace")), "fg", "gui"),
+					},
+				},
+			})
+		end,
+	},
+
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
 	-- keys can be used to configure plugin behavior/loading/etc.
