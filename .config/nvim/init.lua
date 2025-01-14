@@ -257,6 +257,28 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"chrisgrieser/nvim-spider",
+		lazy = true,
+		keys = {
+			{
+				"e",
+				"<cmd>lua require('spider').motion('e')<CR>",
+				mode = { "n", "o", "x" },
+			},
+			{
+				"w",
+				"<cmd>lua require('spider').motion('w')<CR>",
+				mode = { "n", "o", "x" },
+			},
+			{
+				"b",
+				"<cmd>lua require('spider').motion('b')<CR>",
+				mode = { "n", "o", "x" },
+			},
+		},
+	},
+
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
 	-- keys can be used to configure plugin behavior/loading/etc.
