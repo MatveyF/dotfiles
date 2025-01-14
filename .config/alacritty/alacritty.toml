@@ -15,3 +15,9 @@ opacity = 1
 x = 5
 y = 5
 
+[keyboard]
+bindings = [
+    { key = "Back", mods = "Control", chars = "\u0017" },  # Ctrl+Backspace to delete previous word
+    { key = "Delete", mods = "Control", chars = "\u001b[3;5~" }  # Ctrl+Delete to delete next word
+]
+
