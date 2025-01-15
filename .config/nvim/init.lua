@@ -582,6 +582,100 @@ require("lazy").setup({
 		},
 	},
 	{ "Bilal2453/luvit-meta", lazy = true },
+
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"rcarriga/nvim-dap-ui",
+			"mfussenegger/nvim-dap-python",
+		},
+		config = function()
+			local dap = require("dap")
+			local dapui = require("dapui")
+
+			dapui.setup({
+				layouts = {
+					{
+						elements = {
+							{ id = "scopes", size = 0.25 },
+							"breakpoints",
+							"stacks",
+							"watches",
+						},
+						size = 40,
+						position = "left",
+					},
+					{
+						elements = {
+							"repl",
+							"console",
+						},
+						size = 0.25,
+						position = "bottom",
+					},
+				},
+				floating = {
+					max_height = nil,
+					max_width = nil,
+					border = "single",
+					mappings = {
+						close = { "q", "<Esc>" },
+					},
+				},
+			})
+
+			vim.keymap.set("n", "<leader>dr", dap.continue, { desc = "Debug: Start/Continue" })
+			vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Debug: Step Into" })
+			vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Debug: Step Over" })
+			vim.keymap.set("n", "<leader>dO", dap.step_out, { desc = "Debug: Step Out" })
+			vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
+			vim.keymap.set("n", "<leader>dt", dap.terminate, { desc = "Debug: Terminate" })
+
+			-- Toggle viewing debugging UI
+			vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "Debug: See last session result." })
+
+			-- Add the REPL evaluation keymaps
+			local dap_repl = require("dap.repl")
+
+			-- Helper function to get visual selection (for code execution in REPL)
+			function vim.getVisualSelection()
+				vim.cmd('noau normal! "vy"')
+				local text = vim.fn.getreg("v")
+				vim.fn.setreg("v", {})
+				text = string.gsub(text, "\n$", "")
+				return text
+			end
+
+			-- Execute line OR highlighted code in debug REPL
+			vim.keymap.set({ "n", "v" }, "<leader>de", function()
+				if vim.fn.mode() == "v" then
+					local text = vim.getVisualSelection()
+					dap_repl.execute(text)
+				else
+					local line = vim.api.nvim_get_current_line()
+					dap_repl.execute(line)
+				end
+			end, { desc = "Debug: Execute Line/Selection" })
+
+			dapui.setup()
+
+			-- Dap UI opens automatically when debug starts
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
+
+			-- Python setup
+			require("dap-python").setup("python") -- Note: you need debugpy installed
+		end,
+	},
+
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
@@ -814,6 +908,7 @@ require("lazy").setup({
 				"stylua", -- Used to format Lua code
 				"black",
 				"ruff",
+				"debugpy",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
