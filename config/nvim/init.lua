@@ -885,7 +885,6 @@ require("lazy").setup({
 						},
 					},
 				},
-
 				eslint = {}, -- Automatically lint TypeScript files
 			}
 
@@ -924,12 +923,6 @@ require("lazy").setup({
 				},
 			})
 		end,
-	},
-
-	{
-		"pmizio/typescript-tools.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		opts = {},
 	},
 
 	{ -- Autoformat
@@ -1115,7 +1108,6 @@ require("lazy").setup({
 					null_ls.builtins.diagnostics.ruff.with({
 						extra_args = { "--line-length=120" },
 					}),
-					null_ls.builtins.diagnostics.eslint,
 					null_ls.builtins.formatting.prettier,
 				},
 			})
