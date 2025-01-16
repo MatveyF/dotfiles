@@ -86,6 +86,7 @@ truncation_symbol = "…/"
 "Music" = " "
 "Pictures" = " "
 "PycharmProjects" = "󰲋  "
+"TypeScriptProjects" = "󰲋 "
 "IdeaProjects" = "󰲋  "
 
 [python]
