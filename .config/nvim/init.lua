@@ -98,8 +98,11 @@ vim.opt.scrolloff = 10
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- thin vertical line
+vim.opt.colorcolumn = "120"
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -448,13 +451,14 @@ require("lazy").setup({
 				{ "<leader>c", group = "[C]ode", mode = { "n", "x" } },
 				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
-				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>f", group = "[F]ind" },
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
-				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 			},
 		},
 	},
+
+	-- ───────────────────────────────────────────── NAVIGATION ─────────────────────────────────────────────
 
 	-- NOTE: Plugins can specify dependencies.
 	--
@@ -512,8 +516,15 @@ require("lazy").setup({
 			require("telescope").setup({
 				-- You can put your default mappings / updates / etc. in here
 				--  All the info you're looking for is in `:help telescope.setup()`
-				--
-				-- defaults = {
+
+				defaults = {
+					path_display = { "truncate" },
+				},
+				pickers = {
+					lsp_references = {
+						path_display = { "tail" },
+					},
+				},
 				--   mappings = {
 				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
 				--   },
@@ -532,15 +543,15 @@ require("lazy").setup({
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
-			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
-			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
-			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
+			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
+			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+			vim.keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
+			vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
+			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
+			vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
+			vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
+			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 			-- Slightly advanced example of overriding default behavior and theme
@@ -554,21 +565,79 @@ require("lazy").setup({
 
 			-- It's also possible to pass additional configuration options.
 			--  See `:help telescope.builtin.live_grep()` for information about particular keys
-			vim.keymap.set("n", "<leader>s/", function()
+			vim.keymap.set("n", "<leader>f/", function()
 				builtin.live_grep({
 					grep_open_files = true,
 					prompt_title = "Live Grep in Open Files",
 				})
-			end, { desc = "[S]earch [/] in Open Files" })
+			end, { desc = "[F]ind [/] in Open Files" })
 
 			-- Shortcut for searching your Neovim configuration files
-			vim.keymap.set("n", "<leader>sn", function()
+			vim.keymap.set("n", "<leader>fn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
-			end, { desc = "[S]earch [N]eovim files" })
+			end, { desc = "[F]ind [N]eovim files" })
 		end,
 	},
 
-	-- LSP Plugins
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			local harpoon = require("harpoon")
+			harpoon:setup()
+
+			local conf = require("telescope.config").values
+			local function toggle_telescope(harpoon_files)
+				local file_paths = {}
+				for _, item in ipairs(harpoon_files.items) do
+					table.insert(file_paths, item.value)
+				end
+
+				require("telescope.pickers")
+					.new({}, {
+						prompt_title = "Harpoon",
+						finder = require("telescope.finders").new_table({
+							results = file_paths,
+						}),
+						previewer = conf.file_previewer({}),
+						sorter = conf.generic_sorter({}),
+					})
+					:find()
+			end
+
+			vim.keymap.set("n", "<leader>A", function()
+				harpoon:list():add()
+			end)
+
+			vim.keymap.set("n", "<leader>a", function()
+				toggle_telescope(harpoon:list())
+			end, { desc = "Open harpoon window" })
+
+			vim.keymap.set("n", "<leader>1", function()
+				harpoon:list():select(1)
+			end)
+			vim.keymap.set("n", "<leader>2", function()
+				harpoon:list():select(2)
+			end)
+			vim.keymap.set("n", "<leader>3", function()
+				harpoon:list():select(3)
+			end)
+			vim.keymap.set("n", "<leader>4", function()
+				harpoon:list():select(4)
+			end)
+
+			-- Toggle previous & next buffers
+			vim.keymap.set("n", "<leader>j", function()
+				harpoon:list():prev()
+			end)
+			vim.keymap.set("n", "<leader>k", function()
+				harpoon:list():next()
+			end)
+		end,
+	},
+
+	-- ─────────────────────────────────────────── LSP Plugins ───────────────────────────────────────────
 	{
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
@@ -849,7 +918,6 @@ require("lazy").setup({
 			local servers = {
 				-- clangd = {},
 				-- gopls = {},
-				-- pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
@@ -871,7 +939,9 @@ require("lazy").setup({
 						},
 					},
 				},
-				ruff = {},
+				ruff = {
+					line_length = 120,
+				},
 
 				-- ───────────────────────────────────── LUA ─────────────────────────────────────
 				lua_ls = {
@@ -962,10 +1032,15 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
+				python = { "black" },
 				--
 				-- You can use 'stop_after_first' to run the first available formatter from the list
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
+			},
+			formatters = {
+				black = {
+					prepend_args = { "--line-length=120" },
+				},
 			},
 		},
 	},
@@ -1086,24 +1161,22 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
+	{
+		"sainnhe/gruvbox-material",
+		priority = 1000,
 		init = function()
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
+			-- Set contrast and style
+			-- Available contrast options: 'hard', 'medium'(default), 'soft'
+			vim.g.gruvbox_material_background = "soft"
+			-- Available foreground options: 'material'(default), 'mix', 'original'
+			vim.g.gruvbox_material_foreground = "material"
+			-- Available styles: 'default'(default), 'mix', 'original'
+			vim.g.gruvbox_material_better_performance = 1
 
-			-- You can configure highlights by doing something like:
-			vim.cmd.hi("Comment gui=none")
+			-- Load the colorscheme
+			vim.cmd.colorscheme("gruvbox-material")
 		end,
 	},
-
 	-- Highlight todo, notes, etc in comments
 	{
 		"folke/todo-comments.nvim",
