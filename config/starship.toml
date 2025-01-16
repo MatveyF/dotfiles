@@ -47,6 +47,7 @@ disabled = false
 style = "bg:color_purple fg:color_dark_text"
 
 [os.symbols]
+Pop = " "
 Windows = "󰍲 "
 Ubuntu = "󰀵 "
 SUSE = " "
