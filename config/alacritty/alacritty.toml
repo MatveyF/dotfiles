@@ -3,7 +3,7 @@ import = [
 ]
 
 [font]
-size = 10
+size = 14
 
 [font.normal]
 family = "RobotoMono Nerd Font Mono"
