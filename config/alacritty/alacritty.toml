@@ -1,12 +1,12 @@
 import = [
-    "~/dotfiles/.config/alacritty/themes/themes/gruvbox_material_medium_dark.toml"
+    "~/dotfiles/config/alacritty/themes/themes/gruvbox_material_medium_dark.toml"
 ]
 
 [font]
 size = 10
 
 [font.normal]
-family = "RobotoMono Nerd Font"
+family = "RobotoMono Nerd Font Mono"
 
 [window]
 opacity = 1
