@@ -121,6 +121,10 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right win
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.g.copilot_tab_fallback = ""
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -1243,6 +1247,38 @@ require("lazy").setup({
 			},
 		},
 	},
+
+	{
+		"https://github.com/github/copilot.vim",
+		config = function()
+			-- Accept the current suggestion
+			vim.keymap.set("i", "<C-j>", 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false,
+				silent = true,
+			})
+			-- Accept next word
+			vim.keymap.set("i", "<C-k>", "<Plug>(copilot-accept-word)", {
+				silent = true,
+			})
+			-- Accept current line
+			vim.keymap.set("i", "<C-;>", "<Plug>(copilot-accept-line)", {
+				silent = true,
+			})
+			-- Show next/previous suggestion
+			vim.keymap.set("i", "<C-i>", "<Plug>(copilot-next)", {
+				silent = true,
+			})
+			vim.keymap.set("i", "<C-u>", "<Plug>(copilot-previous)", {
+				silent = true,
+			})
+			-- Dismiss suggestion
+			vim.keymap.set("i", "<C-\\>", "<Plug>(copilot-dismiss)", {
+				silent = true,
+			})
+		end,
+	},
+
 	-- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
 	--
 	--  Here are some example plugins that I've included in the Kickstart repository.
