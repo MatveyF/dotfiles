@@ -121,9 +121,14 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right win
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
+vim.keymap.set("n", "<leader>|", ":vsplit<CR>", { desc = "Vertical split" })
+vim.keymap.set("n", "<leader>-", ":split<CR>", { desc = "Horizontal split" })
+
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
+
+vim.opt.termguicolors = true
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -1317,6 +1322,13 @@ require("lazy").setup({
 	{
 		"christoomey/vim-tmux-navigator",
 		lazy = false,
+	},
+
+	{
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup()
+		end,
 	},
 
 	-- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
