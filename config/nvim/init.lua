@@ -165,6 +165,13 @@ require("lazy").setup({
 				"netrw",
 				"tutor",
 			},
+			filetype_defaults = {
+				python = {
+					indent_size = 4,
+					tab_width = 4,
+					use_tabs = false,
+				},
+			},
 		},
 	},
 
@@ -1103,7 +1110,29 @@ require("lazy").setup({
 		"hrsh7th/cmp-nvim-lsp",
 		dependencies = "neovim/nvim-lspconfig",
 	},
+	{
+		"Olical/conjure",
+		ft = { "python" },
+		config = function()
+			-- Python-specific settings
+			vim.g["conjure#client_on_load"] = false -- Don't auto-connect
+			vim.g["conjure#mapping#doc_word"] = "K" -- Use K for documentation
+			vim.g["conjure#log#botright"] = true -- Open log window on bottom
+			vim.g["conjure#log#size#min"] = 15 -- Minimum log window size
+			vim.g["conjure#log#size#max"] = 32 -- Maximum log window size
+			-- Set Python as default client for .py files
+			vim.g["conjure#filetype#python"] = "conjure.client.python.stdio"
 
+			-- Optional: Configure evaluation HUD
+			vim.g["conjure#eval#result_register"] = "c" -- Store results in register 'c'
+			vim.g["conjure#log#hud#enabled"] = true -- Enable HUD
+			vim.g["conjure#log#hud#duration"] = 3500 -- Show HUD for 3 seconds
+		end,
+		dependencies = {
+			-- Optional but recommended for better Python support
+			"HiPhish/nvim-ts-rainbow2", -- For better bracket highlighting
+		},
+	},
 	{
 		"jose-elias-alvarez/null-ls.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -1221,9 +1250,9 @@ require("lazy").setup({
 				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
 				--  If you are experiencing weird indenting issues, add the language to
 				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
-				additional_vim_regex_highlighting = { "ruby" },
+				additional_vim_regex_highlighting = { "ruby", "python" },
 			},
-			indent = { enable = true, disable = { "ruby" } },
+			indent = { enable = true, disable = { "ruby", "python" } },
 		},
 		-- There are additional nvim-treesitter modules that you can use to interact
 		-- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -1283,6 +1312,11 @@ require("lazy").setup({
 				silent = true,
 			})
 		end,
+	},
+
+  {
+		"christoomey/vim-tmux-navigator",
+		lazy = false,
 	},
 
 	-- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
