@@ -452,11 +452,6 @@ require("lazy").setup({
 						path_display = { "tail" },
 					},
 				},
-				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-				--   },
-				-- },
-				-- pickers = {}
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
@@ -467,6 +462,9 @@ require("lazy").setup({
 			-- Enable Telescope extensions if they are installed
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
+
+			-- telescope-file-browser
+			require("telescope").load_extension("file_browser")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
@@ -503,6 +501,14 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>fn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[F]ind [N]eovim files" })
+		end,
+	},
+
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+		config = function()
+			vim.keymap.set("n", "<space>fb", ":Telescope file_browser<CR>", { desc = "[F]ile [B]rowser" })
 		end,
 	},
 
