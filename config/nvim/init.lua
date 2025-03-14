@@ -239,57 +239,6 @@ require("lazy").setup({
 		end,
 	},
 
-	{
-		"shellRaining/hlchunk.nvim",
-		event = { "UIEnter" },
-		config = function()
-			require("hlchunk").setup({
-				chunk = {
-					enable = true,
-					support_filetypes = {
-						"*.py",
-						"*.lua",
-						"*.js",
-						"*.ts",
-					},
-					chars = {
-						horizontal_line = "─",
-						vertical_line = "│",
-						left_top = "╭",
-						left_bottom = "╰",
-						right_arrow = ">",
-					},
-					style = {
-						{ fg = "#806d9c" },
-					},
-				},
-				indent = {
-					enable = true,
-					use_treesitter = true,
-					chars = {
-						"│",
-					},
-					style = {
-						{ fg = "#444444" },
-					},
-				},
-				line_num = {
-					enable = true,
-					style = "#806d9c",
-				},
-				blank = {
-					enable = true,
-					chars = {
-						"·",
-					},
-					style = {
-						vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("Whitespace")), "fg", "gui"),
-					},
-				},
-			})
-		end,
-	},
-
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
 	-- keys can be used to configure plugin behavior/loading/etc.
@@ -1284,7 +1233,7 @@ require("lazy").setup({
 				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
 				additional_vim_regex_highlighting = { "ruby", "python" },
 			},
-			indent = { enable = true, disable = { "ruby", "python" } },
+			indent = { enable = true, disable = { "ruby" } },
 		},
 		-- There are additional nvim-treesitter modules that you can use to interact
 		-- with nvim-treesitter. You should go explore a few and see what interests you:
