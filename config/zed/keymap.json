@@ -1,16 +1,7 @@
-// Zed keymap
-//
-// For information on binding keys, see the Zed
-// documentation: https://zed.dev/docs/key-bindings
-//
-// To see the default key bindings run `zed: open default keymap`
-// from the command palette.
 [
   {
     "context": "Workspace",
-    "bindings": {
-      // "shift shift": "file_finder::Toggle"
-    }
+    "bindings": {}
   },
   {
     "context": "Editor && vim_mode == normal",
@@ -52,6 +43,18 @@
       "ctrl |": "pane::SplitRight",
       "ctrl -": "pane::SplitDown",
       "ctrl-q": "pane::CloseAllItems"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "space f f": "file_finder::Toggle",
+      "space f g": "pane::DeploySearch",
+      "ctrl-q": "workspace::ToggleLeftDock"
     }
   }
 ]
