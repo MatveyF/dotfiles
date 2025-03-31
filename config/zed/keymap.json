@@ -20,7 +20,7 @@
       "space f g": "pane::DeploySearch",
       "space r n": "editor::Rename",
       "shift-k": "editor::Hover",
-      "ctrl-q": "pane::CloseActiveItem",
+      "ctrl-q": "pane::CloseAllItems",
       "space t": "workspace::NewCenterTerminal"
     }
   },
@@ -50,7 +50,8 @@
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl |": "pane::SplitRight",
-      "ctrl -": "pane::SplitDown"
+      "ctrl -": "pane::SplitDown",
+      "ctrl-q": "pane::CloseAllItems"
     }
   }
 ]
