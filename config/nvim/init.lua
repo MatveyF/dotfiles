@@ -1307,6 +1307,14 @@ require("lazy").setup({
 		end,
 	},
 
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
+	},
+
 	-- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
 	--
 	--  Here are some example plugins that I've included in the Kickstart repository.
