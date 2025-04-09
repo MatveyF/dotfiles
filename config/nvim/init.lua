@@ -865,7 +865,7 @@ require("lazy").setup({
 				},
 
 				-- ───────────────────────────────── TypeScript ─────────────────────────────────
-				tsserver = {
+				["typescript-language-server"] = {
 					settings = {
 						javascript = {
 							suggest = {
@@ -902,7 +902,6 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				"black",
 				"ruff",
 				"debugpy",
 			})
@@ -1196,6 +1195,7 @@ require("lazy").setup({
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 		opts = {
 			ensure_installed = {
+				"python",
 				"typescript",
 				"tsx",
 				"javascript",
@@ -1212,7 +1212,6 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
-				"python",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
