@@ -831,21 +831,19 @@ require("lazy").setup({
         -- ts_ls = {},
 
         -- ─────────────────────────────────── PYTHON ───────────────────────────────────
-        pylsp = {
+        pyright = {
           settings = {
-            pylsp = {
-              plugins = {
-                pyflakes = { enabled = false },
-                pycodestyle = { enabled = false },
-                autopep8 = { enabled = false },
-                yapf = { enabled = false },
-                mccabe = { enabled = false },
-                pylsp_mypy = { enabled = false },
-                pylsp_black = { enabled = false },
-                pylsp_isort = { enabled = false },
+            python = {
+              analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                typeCheckingMode = "basic",
               },
             },
           },
+        },
+        ruff = {
+          line_length = 120,
         },
 
         -- ───────────────────────────────────── LUA ─────────────────────────────────────
@@ -902,6 +900,7 @@ require("lazy").setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         "stylua", -- Used to format Lua code
+        "pyright",
         "ruff",
         "debugpy",
       })
