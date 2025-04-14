@@ -1,0 +1,19 @@
+[[search_dirs]]
+path = "~/PycharmProjects/"
+depth = 2
+
+[[search_dirs]]
+path = "~/dotfiles/"
+depth = 1
+
+[[search_dirs]]
+path = "~/work/"
+depth = 2
+
+[[search_dirs]]
+path = "~/personal/"
+depth = 2
+
+[[search_dirs]]
+path = "~/projects/"
+depth = 2
