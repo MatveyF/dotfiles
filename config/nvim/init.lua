@@ -1303,6 +1303,79 @@ require("lazy").setup({
     opts = {},
   },
 
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons" },
+      {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+      },
+    },
+    config = function()
+      require("lualine").setup({
+        options = {
+          icons_enabled = true,
+          theme = "gruvbox-material",
+          component_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
+        },
+
+        sections = {
+          lualine_a = { "filename" },
+          lualine_b = { "branch", "diff" },
+          lualine_c = {
+            {
+              "harpoon2",
+            },
+          },
+          lualine_x = {
+            { "diagnostics",   sections = { "error", "warn" } },
+            { "searchcount" },
+            { "selectioncount" },
+          },
+          lualine_y = { "location" },
+          lualine_z = { "mode" },
+        },
+      })
+    end,
+  },
+
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+    end,
+  },
+
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+      -- {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
+    },
+    lazy = false,
+    ---@module "neo-tree"
+    ---@type neotree.Config?
+    opts = {
+      window = {
+        position = "right",
+      },
+    },
+    config = function(_, opts)
+      require("neo-tree").setup(opts)
+      vim.keymap.set("n", "<leader>e", function()
+        require("neo-tree.command").execute({
+          position = "right",
+          toggle = true,
+        })
+      end, { desc = "Toggle Neo-tree" })
+    end,
+  },
+
   -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
   --
   --  Here are some example plugins that I've included in the Kickstart repository.
@@ -1312,8 +1385,6 @@ require("lazy").setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
