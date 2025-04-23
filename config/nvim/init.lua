@@ -667,28 +667,6 @@ require("lazy").setup({
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
       -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
       -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
@@ -833,6 +811,11 @@ require("lazy").setup({
         -- ─────────────────────────────────── PYTHON ───────────────────────────────────
         basedpyright = {
           settings = {
+            basedpyright = {
+              analysis = {
+                typeCheckingMode = "standard",
+              },
+            },
             python = {
               analysis = {
                 autoSearchPaths = true,
@@ -1200,6 +1183,10 @@ require("lazy").setup({
         "javascript",
         "html",
         "css",
+        "go",
+        "gomod",
+        "gowork",
+        "gosum",
         "bash",
         "c",
         "diff",
@@ -1235,7 +1222,7 @@ require("lazy").setup({
     "nvim-treesitter/nvim-treesitter-context",
     opts = {
       enable = true,
-      max_lines = 3,     -- Number of lines the context will take up at most
+      max_lines = 5,     -- Number of lines the context will take up at most
       trim_scope = "outer", -- Controls which context lines to discard if max_lines is exceeded
       patterns = {       -- Match patterns for showing context
         default = {
