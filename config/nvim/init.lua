@@ -862,7 +862,23 @@ require("lazy").setup({
         },
         eslint = {}, -- Automatically lint TypeScript files
 
+        emmet_ls = {
+          filetypes = {
+            "html",
+            "typescriptreact",
+            "javascriptreact",
+            "css",
+            "sass",
+            "scss",
+            "less",
+            "tsx",
+            "jsx",
+          },
+        },
+
         -- ───────────────────────────────────── OTHER ─────────────────────────────────────
+        cssls = {},
+        tailwindcss = {},
         sqlls = {},
         yamlls = {},
       }
@@ -886,6 +902,9 @@ require("lazy").setup({
         "basedpyright",
         "ruff",
         "debugpy",
+        "cssls",
+        "tailwindcss",
+        "emmet_ls",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -1080,7 +1099,18 @@ require("lazy").setup({
 
       local sources = {
         diagnostics.checkmake,
-        formatting.prettier.with({ filetypes = { "html", "json", "yaml", "markdown" } }),
+        formatting.prettier.with({
+          filetypes = {
+            "html",
+            "json",
+            "yaml",
+            "markdown",
+            "javascript",
+            "typescript",
+            "javascriptreact",
+            "typescriptreact",
+          },
+        }),
         formatting.stylua,
         formatting.shfmt.with({ args = { "-i", "4" } }),
         formatting.terraform_fmt,
