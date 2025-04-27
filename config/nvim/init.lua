@@ -1339,7 +1339,12 @@ require("lazy").setup({
         },
 
         sections = {
-          lualine_a = { "filename" },
+          lualine_a = {
+            {
+              "filename",
+              path = 1,
+            },
+          },
           lualine_b = { "branch", "diff" },
           lualine_c = {
             {
