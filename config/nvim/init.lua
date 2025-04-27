@@ -1343,6 +1343,7 @@ require("lazy").setup({
             {
               "filename",
               path = 1,
+              shorting_target = 55,
             },
           },
           lualine_b = { "branch", "diff" },
