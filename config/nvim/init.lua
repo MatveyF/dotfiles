@@ -1050,29 +1050,6 @@ require("lazy").setup({
     dependencies = "neovim/nvim-lspconfig",
   },
   {
-    "Olical/conjure",
-    ft = { "python" },
-    config = function()
-      -- Python-specific settings
-      vim.g["conjure#client_on_load"] = false -- Don't auto-connect
-      vim.g["conjure#mapping#doc_word"] = "K" -- Use K for documentation
-      vim.g["conjure#log#botright"] = true -- Open log window on bottom
-      vim.g["conjure#log#size#min"] = 15   -- Minimum log window size
-      vim.g["conjure#log#size#max"] = 32   -- Maximum log window size
-      -- Set Python as default client for .py files
-      vim.g["conjure#filetype#python"] = "conjure.client.python.stdio"
-
-      -- Optional: Configure evaluation HUD
-      vim.g["conjure#eval#result_register"] = "c" -- Store results in register 'c'
-      vim.g["conjure#log#hud#enabled"] = true  -- Enable HUD
-      vim.g["conjure#log#hud#duration"] = 3500 -- Show HUD for 3 seconds
-    end,
-    dependencies = {
-      -- Optional but recommended for better Python support
-      "HiPhish/nvim-ts-rainbow2", -- For better bracket highlighting
-    },
-  },
-  {
     "nvimtools/none-ls.nvim",
     dependencies = {
       "nvimtools/none-ls-extras.nvim",
