@@ -562,40 +562,8 @@ require("lazy").setup({
       "rcarriga/nvim-dap-ui",
       "mfussenegger/nvim-dap-python",
     },
-    config = function()
+    config = function(_)
       local dap = require("dap")
-      local dapui = require("dapui")
-
-      dapui.setup({
-        layouts = {
-          {
-            elements = {
-              { id = "scopes", size = 0.25 },
-              "breakpoints",
-              "stacks",
-              "watches",
-            },
-            size = 40,
-            position = "left",
-          },
-          {
-            elements = {
-              "repl",
-              "console",
-            },
-            size = 0.25,
-            position = "bottom",
-          },
-        },
-        floating = {
-          max_height = nil,
-          max_width = nil,
-          border = "single",
-          mappings = {
-            close = { "q", "<Esc>" },
-          },
-        },
-      })
 
       vim.keymap.set("n", "<leader>dr", dap.continue, { desc = "Debug: Start/Continue" })
       vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Debug: Step Into" })
@@ -604,8 +572,11 @@ require("lazy").setup({
       vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
       vim.keymap.set("n", "<leader>dt", dap.terminate, { desc = "Debug: Terminate" })
 
-      -- Toggle viewing debugging UI
-      vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "Debug: See last session result." })
+      -- Session management
+      vim.keymap.set("n", "<leader>dcc", function()
+        dap.clear_breakpoints()
+        require("notify")("Breakpoints cleared", "warn")
+      end, { desc = "Debug: Clear all breakpoints" })
 
       -- Add the REPL evaluation keymaps
       local dap_repl = require("dap.repl")
@@ -630,9 +601,46 @@ require("lazy").setup({
         end
       end, { desc = "Debug: Execute Line/Selection" })
 
-      dapui.setup()
+      -- Python setup
+      require("dap-python").setup("python") -- Note: you need debugpy installed
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    opts = {
+      layouts = {
+        {
+          elements = {
+            { id = "scopes", size = 1.0 },
+          },
+          size = 42,
+          position = "right",
+        },
+        {
+          elements = {
+            "repl",
+            "console",
+          },
+          size = 0.25,
+          position = "bottom",
+        },
+      },
+      floating = {
+        max_height = nil,
+        max_width = nil,
+        border = "single",
+        mappings = {
+          close = { "q", "<Esc>" },
+        },
+      },
+    },
+    config = function(_, opts)
+      local dapui = require("dapui")
+      dapui.setup(opts)
 
-      -- Dap UI opens automatically when debug starts
+      -- Set up the automatic open/close
+      local dap = require("dap")
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
@@ -643,11 +651,33 @@ require("lazy").setup({
         dapui.close()
       end
 
-      -- Python setup
-      require("dap-python").setup("python") -- Note: you need debugpy installed
+      -- Add the toggle UI keymap
+      vim.keymap.set("n", "<leader>du", function()
+        dapui.toggle()
+      end, { desc = "Debug: Toggle UI" })
     end,
   },
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      enabled = true,
+      enabled_commands = true,         -- Create commands DapVirtualTextEnable, DapVirtualTextDisable, etc.
+      highlight_changed_variables = true, -- Highlight changed values with NvimDapVirtualTextChanged
+      highlight_new_as_changed = false, -- Highlight new variables in the same way as changed variables
+      show_stop_reason = true,         -- Show stop reason when stopped for exceptions
+      commented = false,               -- Prefix virtual text with comment string
+      only_first_definition = true,    -- Only show virtual text at first definition (if there are multiple)
+      all_references = false,          -- Show virtual text on all all references of the variable (not only definitions)
 
+      virt_text_pos = "eol",
+
+      -- Experimental features:
+      all_frames = false,   -- Show virtual text for all stack frames not only current
+      virt_lines = false,   -- Show virtual lines instead of virtual text (will flicker!)
+      virt_text_win_col = nil, -- Position the virtual text at a fixed window column (starting from the first text column)
+    },
+  },
   {
     -- Main LSP Configuration
     "neovim/nvim-lspconfig",
