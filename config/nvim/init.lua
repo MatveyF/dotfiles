@@ -565,6 +565,14 @@ require("lazy").setup({
     config = function(_)
       local dap = require("dap")
 
+      vim.api.nvim_set_hl(0, "DapBreakpointSymbol", { fg = "#FF0000" })
+      vim.fn.sign_define("DapBreakpoint", {
+        text = "●",
+        texthl = "DapBreakpointSymbol",
+        linehl = "DapBreakpointLine",
+        numhl = "DapBreakpointNum",
+      })
+
       vim.keymap.set("n", "<leader>dr", dap.continue, { desc = "Debug: Start/Continue" })
       vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Debug: Step Into" })
       vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Debug: Step Over" })
