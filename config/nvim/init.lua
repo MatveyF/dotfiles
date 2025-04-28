@@ -565,9 +565,8 @@ require("lazy").setup({
     config = function(_)
       local dap = require("dap")
 
-      vim.api.nvim_set_hl(0, "DapBreakpointSymbol", { fg = "#FF0000" })
       vim.fn.sign_define("DapBreakpoint", {
-        text = "●",
+        text = "◉",
         texthl = "DapBreakpointSymbol",
         linehl = "DapBreakpointLine",
         numhl = "DapBreakpointNum",
@@ -577,13 +576,13 @@ require("lazy").setup({
       vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Debug: Step Into" })
       vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Debug: Step Over" })
       vim.keymap.set("n", "<leader>dO", dap.step_out, { desc = "Debug: Step Out" })
-      vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
+      vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
       vim.keymap.set("n", "<leader>dt", dap.terminate, { desc = "Debug: Terminate" })
 
       -- Session management
       vim.keymap.set("n", "<leader>dcc", function()
         dap.clear_breakpoints()
-        require("notify")("Breakpoints cleared", "warn")
+        vim.notify("Cleared all breakpoints", vim.log.levels.INFO, { title = "Debug" })
       end, { desc = "Debug: Clear all breakpoints" })
 
       -- Add the REPL evaluation keymaps
