@@ -325,7 +325,7 @@ require("lazy").setup({
       -- Document existing key chains
       spec = {
         { "<leader>c", group = "[C]ode",     mode = { "n", "x" } },
-        { "<leader>d", group = "[D]ocument" },
+        { "<leader>d", group = "[D]ebug" },
         { "<leader>r", group = "[R]ename" },
         { "<leader>f", group = "[F]ind" },
         { "<leader>w", group = "[W]orkspace" },
@@ -1164,6 +1164,9 @@ require("lazy").setup({
       vim.g.gruvbox_material_foreground = "material"
       -- Available styles: 'default'(default), 'mix', 'original'
       vim.g.gruvbox_material_better_performance = 1
+
+      -- transparency
+      vim.g.gruvbox_material_transparent_background = 1
 
       -- Load the colorscheme
       vim.cmd.colorscheme("gruvbox-material")

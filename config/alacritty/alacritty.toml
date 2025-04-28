@@ -1,15 +1,15 @@
-import = [
+general.import = [
     "~/dotfiles/config/alacritty/themes/themes/gruvbox_material_medium_dark.toml"
 ]
 
 [font]
-size = 14
+size = 16
 
 [font.normal]
 family = "RobotoMono Nerd Font Mono"
 
 [window]
-opacity = 1
+opacity = 0.97
 
 [window.padding]
 x = 5
