@@ -575,6 +575,7 @@ require("lazy").setup({
       require("dap-python").setup("python") -- Note: you need debugpy installed
     end,
   },
+
   {
     "rcarriga/nvim-dap-ui",
     dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
@@ -627,6 +628,7 @@ require("lazy").setup({
       end, { desc = "Debug: Toggle UI" })
     end,
   },
+
   {
     "theHamsta/nvim-dap-virtual-text",
     dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
@@ -648,6 +650,108 @@ require("lazy").setup({
       virt_text_win_col = nil, -- Position the virtual text at a fixed window column (starting from the first text column)
     },
   },
+
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-jest",
+    },
+    config = function()
+      local neotest = require("neotest")
+      local dap = require("dap")
+      local dapui = require("dapui")
+
+      -- Set up DAP event listeners for UI
+      dap.listeners.before.event_initialized["neotest"] = function()
+        dapui.open()
+      end
+
+      dap.listeners.before.event_terminated["neotest"] = function()
+        dapui.close()
+      end
+
+      dap.listeners.before.event_exited["neotest"] = function()
+        dapui.close()
+      end
+
+      neotest.setup({
+        adapters = {
+          require("neotest-python")({
+            dap = { justMyCode = false },
+            runner = "pytest",
+            python = "python",
+            pytest_discover_instance = true,
+          }),
+          require("neotest-jest")({
+            jestCommand = "npm test --",
+            jestConfigFile = "jest.config.js",
+            env = { CI = true },
+            cwd = function(path)
+              return path:match("(.*/)")
+            end,
+          }),
+        },
+        quickfix = {
+          enabled = true,
+          open = function()
+            vim.cmd("copen")
+          end,
+        },
+        icons = {
+          running = "◌",
+          passed = "✓",
+          failed = "✗",
+          skipped = "○",
+        },
+      })
+
+      vim.keymap.set("n", "<leader>tt", function()
+        neotest.run.run()
+      end, { desc = "Run nearest test" })
+
+      vim.keymap.set("n", "<leader>tf", function()
+        neotest.run.run(vim.fn.expand("%"))
+      end, { desc = "Run tests in current file" })
+
+      vim.keymap.set("n", "<leader>td", function()
+        neotest.run.run({ strategy = "dap" })
+      end, { desc = "Debug nearest test" })
+
+      vim.keymap.set("n", "<leader>ts", function()
+        neotest.run.stop()
+      end, { desc = "Stop test run" })
+
+      vim.keymap.set("n", "<leader>ta", function()
+        neotest.run.attach()
+      end, { desc = "Attach to test run" })
+
+      vim.keymap.set("n", "<leader>to", function()
+        neotest.output.open({ enter = true })
+      end, { desc = "Open test output" })
+
+      vim.keymap.set("n", "<leader>tp", function()
+        neotest.output_panel.toggle()
+      end, { desc = "Toggle output panel" })
+
+      vim.keymap.set("n", "<leader>ts", function()
+        neotest.summary.toggle()
+      end, { desc = "Toggle test summary" })
+
+      vim.keymap.set("n", "[t", function()
+        neotest.jump.prev({ status = "failed" })
+      end, { desc = "Jump to previous failed test" })
+
+      vim.keymap.set("n", "]t", function()
+        neotest.jump.next({ status = "failed" })
+      end, { desc = "Jump to next failed test" })
+    end,
+  },
+
   {
     -- Main LSP Configuration
     "neovim/nvim-lspconfig",
