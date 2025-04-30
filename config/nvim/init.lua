@@ -160,7 +160,7 @@ require("lazy").setup({
   {
     "NMAC427/guess-indent.nvim",
     opts = {
-      auto_cmd = true,  -- Set up autocommand on startup
+      auto_cmd = true,     -- Set up autocommand on startup
       override_editorconfig = false,
       filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
         "netrw",
@@ -211,9 +211,9 @@ require("lazy").setup({
     event = "InsertEnter",
     config = function()
       require("nvim-autopairs").setup({
-        check_ts = true,                 -- Enable treesitter integration
+        check_ts = true,                      -- Enable treesitter integration
         ts_config = {
-          lua = { "string" },            -- Don't add pairs in lua string treesitter nodes
+          lua = { "string" },                 -- Don't add pairs in lua string treesitter nodes
           javascript = { "template_string" }, -- Don't add pairs in js template_string
         },
         fast_wrap = {
@@ -244,7 +244,7 @@ require("lazy").setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  {                   -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     "folke/which-key.nvim",
     event = "VimEnter", -- Sets the loading event to 'VimEnter'
     opts = {
@@ -525,6 +525,26 @@ require("lazy").setup({
       "rcarriga/nvim-dap-ui",
       "mfussenegger/nvim-dap-python",
     },
+    cmd = {
+      "DapContinue",
+      "DapStepInto",
+      "DapStepOver",
+      "DapStepOut",
+      "DapTerminate",
+      "DapToggleBreakpoint",
+      "DapClearBreakpoints",
+      "DapReplOpen",
+      "DapReplClose",
+      "DapReplExecute",
+      "DapReplEvaluate",
+    },
+    keys = {
+      { "<leader>dr", desc = "Debug: Start/Continue" },
+      { "<leader>di", desc = "Debug: Step Into" },
+      { "<leader>do", desc = "Debug: Step Over" },
+      { "<leader>dO", desc = "Debug: Step Out" },
+      { "<leader>b",  desc = "Debug: Toggle Breakpoint" },
+    },
     config = function(_)
       local dap = require("dap")
 
@@ -634,19 +654,19 @@ require("lazy").setup({
     dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
     opts = {
       enabled = true,
-      enabled_commands = true,         -- Create commands DapVirtualTextEnable, DapVirtualTextDisable, etc.
+      enabled_commands = true,            -- Create commands DapVirtualTextEnable, DapVirtualTextDisable, etc.
       highlight_changed_variables = true, -- Highlight changed values with NvimDapVirtualTextChanged
-      highlight_new_as_changed = false, -- Highlight new variables in the same way as changed variables
-      show_stop_reason = true,         -- Show stop reason when stopped for exceptions
-      commented = false,               -- Prefix virtual text with comment string
-      only_first_definition = true,    -- Only show virtual text at first definition (if there are multiple)
-      all_references = false,          -- Show virtual text on all all references of the variable (not only definitions)
+      highlight_new_as_changed = false,   -- Highlight new variables in the same way as changed variables
+      show_stop_reason = true,            -- Show stop reason when stopped for exceptions
+      commented = false,                  -- Prefix virtual text with comment string
+      only_first_definition = true,       -- Only show virtual text at first definition (if there are multiple)
+      all_references = false,             -- Show virtual text on all all references of the variable (not only definitions)
 
       virt_text_pos = "eol",
 
       -- Experimental features:
-      all_frames = false,   -- Show virtual text for all stack frames not only current
-      virt_lines = false,   -- Show virtual lines instead of virtual text (will flicker!)
+      all_frames = false,      -- Show virtual text for all stack frames not only current
+      virt_lines = false,      -- Show virtual lines instead of virtual text (will flicker!)
       virt_text_win_col = nil, -- Position the virtual text at a fixed window column (starting from the first text column)
     },
   },
@@ -660,6 +680,21 @@ require("lazy").setup({
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-jest",
+    },
+    cmd = {
+      "Neotest",
+      "NeotestNearest",
+      "NeotestFile",
+      "NeotestRun",
+      "NeotestAttach",
+      "NeotestSummary",
+    },
+    keys = {
+      { "<leader>tt", desc = "Run nearest test" },
+      { "<leader>tf", desc = "Run tests in current file" },
+      { "<leader>td", desc = "Debug nearest test" },
+      { "<leader>ts", desc = "Stop/Summary" },
+      { "<leader>to", desc = "Open test output" },
     },
     config = function()
       local neotest = require("neotest")
@@ -814,11 +849,7 @@ require("lazy").setup({
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map(
-            "<leader>ws",
-            require("telescope.builtin").lsp_dynamic_workspace_symbols,
-            "[W]orkspace [S]ymbols"
-          )
+          map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -839,8 +870,7 @@ require("lazy").setup({
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local highlight_augroup =
-                vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+            local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -1134,7 +1164,7 @@ require("lazy").setup({
     },
     config = function()
       local null_ls = require("null-ls")
-      local formatting = null_ls.builtins.formatting -- to setup formatters
+      local formatting = null_ls.builtins.formatting   -- to setup formatters
       local diagnostics = null_ls.builtins.diagnostics -- to setup linters
 
       -- list of formatters & linters for mason to install
@@ -1142,7 +1172,7 @@ require("lazy").setup({
         ensure_installed = {
           "checkmake",
           "prettier", -- ts/js formatter
-          "stylua", -- lua formatter
+          "stylua",   -- lua formatter
           "eslint_d", -- ts/js linter
           "shfmt",
           "ruff",
@@ -1165,7 +1195,9 @@ require("lazy").setup({
             "typescriptreact",
           },
         }),
-        formatting.stylua,
+        formatting.stylua.with({
+          extra_args = { "--indent-width", "2", "--indent-type", "Spaces" },
+        }),
         formatting.shfmt.with({ args = { "-i", "4" } }),
         formatting.terraform_fmt,
         require("none-ls.formatting.ruff").with({ extra_args = { "--extend-select", "I" } }),
@@ -1291,9 +1323,9 @@ require("lazy").setup({
     "nvim-treesitter/nvim-treesitter-context",
     opts = {
       enable = true,
-      max_lines = 5,     -- Number of lines the context will take up at most
+      max_lines = 5,        -- Number of lines the context will take up at most
       trim_scope = "outer", -- Controls which context lines to discard if max_lines is exceeded
-      patterns = {       -- Match patterns for showing context
+      patterns = {          -- Match patterns for showing context
         default = {
           "class",
           "function",
@@ -1310,6 +1342,7 @@ require("lazy").setup({
 
   {
     "https://github.com/github/copilot.vim",
+    event = "InsertEnter",
     config = function()
       -- Accept the current suggestion
       vim.keymap.set("i", "<C-j>", 'copilot#Accept("\\<CR>")', {
@@ -1413,6 +1446,7 @@ require("lazy").setup({
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
+    cmd = "Neotree",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
