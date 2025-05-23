@@ -160,7 +160,7 @@ require("lazy").setup({
   {
     "NMAC427/guess-indent.nvim",
     opts = {
-      auto_cmd = true,     -- Set up autocommand on startup
+      auto_cmd = true, -- Set up autocommand on startup
       override_editorconfig = false,
       filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
         "netrw",
@@ -211,9 +211,9 @@ require("lazy").setup({
     event = "InsertEnter",
     config = function()
       require("nvim-autopairs").setup({
-        check_ts = true,                      -- Enable treesitter integration
+        check_ts = true, -- Enable treesitter integration
         ts_config = {
-          lua = { "string" },                 -- Don't add pairs in lua string treesitter nodes
+          lua = { "string" }, -- Don't add pairs in lua string treesitter nodes
           javascript = { "template_string" }, -- Don't add pairs in js template_string
         },
         fast_wrap = {
@@ -244,7 +244,7 @@ require("lazy").setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     "folke/which-key.nvim",
     event = "VimEnter", -- Sets the loading event to 'VimEnter'
     opts = {
@@ -290,7 +290,7 @@ require("lazy").setup({
 
       -- Document existing key chains
       spec = {
-        { "<leader>c", group = "[C]ode",     mode = { "n", "x" } },
+        { "<leader>c", group = "[C]ode", mode = { "n", "x" } },
         { "<leader>d", group = "[D]ebug" },
         { "<leader>r", group = "[R]ename" },
         { "<leader>f", group = "[F]ind" },
@@ -330,7 +330,7 @@ require("lazy").setup({
       { "nvim-telescope/telescope-ui-select.nvim" },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { "nvim-tree/nvim-web-devicons",            enabled = vim.g.have_nerd_font },
+      { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -449,29 +449,29 @@ require("lazy").setup({
         end
 
         require("telescope.pickers")
-            .new({}, {
-              prompt_title = "Harpoon",
-              finder = finder(),
-              previewer = conf.file_previewer({}),
-              sorter = conf.generic_sorter({}),
-              layout_config = {
-                height = 0.7,
-                prompt_position = "top",
-                preview_cutoff = 120,
-              },
-              attach_mappings = function(prompt_bufnr, map)
-                map("i", "<C-d>", function()
-                  local state = require("telescope.actions.state")
-                  local selected_entry = state.get_selected_entry()
-                  local current_picker = state.get_current_picker(prompt_bufnr)
+          .new({}, {
+            prompt_title = "Harpoon",
+            finder = finder(),
+            previewer = conf.file_previewer({}),
+            sorter = conf.generic_sorter({}),
+            layout_config = {
+              height = 0.7,
+              prompt_position = "top",
+              preview_cutoff = 120,
+            },
+            attach_mappings = function(prompt_bufnr, map)
+              map("i", "<C-d>", function()
+                local state = require("telescope.actions.state")
+                local selected_entry = state.get_selected_entry()
+                local current_picker = state.get_current_picker(prompt_bufnr)
 
-                  table.remove(harpoon_files.items, selected_entry.index)
-                  current_picker:refresh(finder())
-                end)
-                return true
-              end,
-            })
-            :find()
+                table.remove(harpoon_files.items, selected_entry.index)
+                current_picker:refresh(finder())
+              end)
+              return true
+            end,
+          })
+          :find()
       end
 
       vim.keymap.set("n", "<leader>A", function()
@@ -543,7 +543,7 @@ require("lazy").setup({
       { "<leader>di", desc = "Debug: Step Into" },
       { "<leader>do", desc = "Debug: Step Over" },
       { "<leader>dO", desc = "Debug: Step Out" },
-      { "<leader>b",  desc = "Debug: Toggle Breakpoint" },
+      { "<leader>b", desc = "Debug: Toggle Breakpoint" },
     },
     config = function(_)
       local dap = require("dap")
@@ -654,19 +654,19 @@ require("lazy").setup({
     dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
     opts = {
       enabled = true,
-      enabled_commands = true,            -- Create commands DapVirtualTextEnable, DapVirtualTextDisable, etc.
+      enabled_commands = true, -- Create commands DapVirtualTextEnable, DapVirtualTextDisable, etc.
       highlight_changed_variables = true, -- Highlight changed values with NvimDapVirtualTextChanged
-      highlight_new_as_changed = false,   -- Highlight new variables in the same way as changed variables
-      show_stop_reason = true,            -- Show stop reason when stopped for exceptions
-      commented = false,                  -- Prefix virtual text with comment string
-      only_first_definition = true,       -- Only show virtual text at first definition (if there are multiple)
-      all_references = false,             -- Show virtual text on all all references of the variable (not only definitions)
+      highlight_new_as_changed = false, -- Highlight new variables in the same way as changed variables
+      show_stop_reason = true, -- Show stop reason when stopped for exceptions
+      commented = false, -- Prefix virtual text with comment string
+      only_first_definition = true, -- Only show virtual text at first definition (if there are multiple)
+      all_references = false, -- Show virtual text on all all references of the variable (not only definitions)
 
       virt_text_pos = "eol",
 
       -- Experimental features:
-      all_frames = false,      -- Show virtual text for all stack frames not only current
-      virt_lines = false,      -- Show virtual lines instead of virtual text (will flicker!)
+      all_frames = false, -- Show virtual text for all stack frames not only current
+      virt_lines = false, -- Show virtual lines instead of virtual text (will flicker!)
       virt_text_win_col = nil, -- Position the virtual text at a fixed window column (starting from the first text column)
     },
   },
@@ -939,11 +939,6 @@ require("lazy").setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
@@ -1017,6 +1012,9 @@ require("lazy").setup({
             "jsx",
           },
         },
+
+        -- ─────────────────────────────────────── Go ──────────────────────────────────────
+        gopls = {},
 
         -- ───────────────────────────────────── OTHER ─────────────────────────────────────
         cssls = {},
@@ -1173,7 +1171,7 @@ require("lazy").setup({
     },
     config = function()
       local null_ls = require("null-ls")
-      local formatting = null_ls.builtins.formatting   -- to setup formatters
+      local formatting = null_ls.builtins.formatting -- to setup formatters
       local diagnostics = null_ls.builtins.diagnostics -- to setup linters
 
       -- list of formatters & linters for mason to install
@@ -1181,7 +1179,7 @@ require("lazy").setup({
         ensure_installed = {
           "checkmake",
           "prettier", -- ts/js formatter
-          "stylua",   -- lua formatter
+          "stylua", -- lua formatter
           "eslint_d", -- ts/js linter
           "shfmt",
           "ruff",
@@ -1332,9 +1330,9 @@ require("lazy").setup({
     "nvim-treesitter/nvim-treesitter-context",
     opts = {
       enable = true,
-      max_lines = 5,        -- Number of lines the context will take up at most
+      max_lines = 5, -- Number of lines the context will take up at most
       trim_scope = "outer", -- Controls which context lines to discard if max_lines is exceeded
-      patterns = {          -- Match patterns for showing context
+      patterns = { -- Match patterns for showing context
         default = {
           "class",
           "function",
@@ -1434,8 +1432,7 @@ require("lazy").setup({
             },
           },
           lualine_x = {
-            { "diagnostics",   sections = { "error", "warn" } },
-            { "searchcount" },
+            { "diagnostics", sections = { "error", "warn" } },
             { "selectioncount" },
           },
           lualine_y = { "location" },
